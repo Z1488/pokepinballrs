@@ -1,9 +1,6 @@
 #include "global.h"
 #include "main.h"
 
-extern const struct OamData gEmptyOamData[128];
-extern int sub_55A24(u8*); // Rumble Pak?
-
 static u8 *sub_734(u32, u8*, u32);
 static int sub_780(int, int);
 
@@ -28,7 +25,7 @@ void sub_24C(void)
     for (i = 0; i < 32; i++)
     {
         REG_BLDY = 15 - i / 2;
-        sub_D74();
+        MainLoopIter();
     }
 
     REG_BLDCNT = 0;
@@ -47,7 +44,7 @@ void sub_2B4(void)
     for (i = 0; i < 16; i++)
     {
         REG_BLDY = i + 1;
-        sub_D74();
+        MainLoopIter();
     }
 
     gMain.unk16 |= DISPCNT_FORCED_BLANK;
@@ -95,13 +92,13 @@ s16 LoadSpriteSets(const struct SpriteSet *const *spriteSets, u16 numSpriteSets,
     return loadedCount;
 }
 
-void sub_438(void)
+void ResetSomeGraphicsRelatedStuff(void)
 {
     gMain.unk16 |= DISPCNT_FORCED_BLANK;
     REG_DISPCNT |= DISPCNT_FORCED_BLANK;
-    sub_490();
+    ClearGraphicsMemory();
     sub_518();
-    sub_578();
+    ClearSprites();
     gMain.unkF = 0;
     gMain.unk10 = 0;
     gMain.unk50 = 0;
@@ -118,7 +115,7 @@ void sub_438(void)
     gMain.unk2C = 0;
 }
 
-void sub_490(void)
+void ClearGraphicsMemory(void)
 {
     DmaFill16(3, 0, (void *)VRAM, VRAM_SIZE);
     DmaFill32(3, 0, (void *)OAM, OAM_SIZE);
@@ -149,7 +146,7 @@ void sub_518(void)
     }
 }
 
-void sub_578(void)
+void ClearSprites(void)
 {
     u16 i, j;
 
@@ -189,7 +186,7 @@ void sub_578(void)
 void sub_678(u8 *arg0, s16 arg1, s16 arg2)
 {
     // Rumble Pak related?
-    s16 var0 = sub_55A24(arg0) - 1;
+    s16 var0 = strlen(arg0) - 1;
     u16 *dest = &gUnknown_03005C00[arg1 * 32 + arg2];
     do
     {

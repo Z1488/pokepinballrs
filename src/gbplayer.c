@@ -2,18 +2,6 @@
 #include "gbplayer.h"
 #include "main.h"
 
-extern void sub_1340(void);
-extern void sub_13FC(void);
-extern void sub_1828(void);
-extern u8 gUnknown_02002808[];
-extern u16 sGbPlayerCurKeys;
-extern u16 sGbPlayerPrevKeys;
-extern const u8 gUnknown_08058048[];
-extern const u8 gUnknown_08058248[];
-extern const u8 gUnknown_0805C248[];
-
-extern const int *gUnknown_086A4C44[];
-
 /*static*/ void ReadGbPlayerKeys(void)
 {
     u16 keyInput = REG_KEYINPUT ^ KEYS_MASK;
@@ -303,7 +291,7 @@ void sub_1198(void)
 
 void sub_11B0(int arg0)
 {
-    if (gUnknown_0200B134[0xCD])
+    if (gMain_saveData.unk141)
     {
         gUnknown_02019BF8 = arg0;
         gUnknown_02019BFC = 0;

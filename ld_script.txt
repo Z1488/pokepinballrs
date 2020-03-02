@@ -6,7 +6,8 @@ SECTIONS
     ALIGN(4)
     {
 <EWRAM>
-        . = 0x40000;
+        /* COMMON starts at ??? */
+<COMMON>
     }
 
     /* start of iwram */
@@ -14,11 +15,12 @@ SECTIONS
     iwram (NOLOAD) :
     ALIGN(4)
     {
-    /* .bss starts at 0x3000000 */
+        /* .bss starts at 0x3000000 */
 <BSS>
+        . = 0x7400;
+        /* .bss.code starts at 0x3007400 */
+        src/m4a.o(.bss.code);
 
-    /* COMMON starts at ??? */
-<COMMON>
         . = 0x8000;
     }
 
@@ -35,23 +37,21 @@ SECTIONS
         asm/bonus_field_select.o(.text);
         asm/ereader.o(.text);
         asm/pokedex.o(.text);
-        asm/field_select.o(.text);
+        src/field_select.o(.text);
         asm/intro.o(.text);
         asm/high_scores.o(.text);
-        asm/rom_1068C.o(.text);
+        src/rom_1068C.o(.text);
         src/titlescreen.o(.text);
-        asm/titlescreen.o(.text);
         asm/rom_11B9C.o(.text);
         src/rom_3219C.o(.text);
         asm/rom_3219C.o(.text);
+        src/options.o(.text);
         asm/options.o(.text);
-        asm/rom_528AC.o(.text);
+        src/rom_528AC.o(.text);
         asm/m4a_1.o(.text);
-        src/m4a_2.o(.text);
-        asm/m4a_3.o(.text);
-        src/m4a_4.o(.text);
+        src/m4a.o(.text);
         asm/libagbsyscall.o(.text);
-        asm/unknown_lib.o(.text);
+        src/agb_sram.o(.text);
         *libgcc.a:_call_via_rX.o(.text);
         *libgcc.a:_divsi3.o(.text);
         *libgcc.a:_dvmd_tls.o(.text);
@@ -60,7 +60,7 @@ SECTIONS
         *libgcc.a:_umodsi3.o(.text);
         *libc.a:memcpy.o(.text);
         *libc.a:memset.o(.text);
-        asm/unknown_lib_2.o(.text);
+        *libc.a:strlen.o(.text);
     }=0
 
     .rodata :
@@ -74,3 +74,7 @@ SECTIONS
         *(*);
     }
 }
+
+/* m4a parameters */
+gMaxLines = 0x3C;
+gNumMusicPlayers = 0x4;

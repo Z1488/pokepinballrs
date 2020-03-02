@@ -4,6 +4,13 @@
 #include <string.h>
 #include "gba/gba.h"
 
+#define NUM_SPRITE_GROUPS 100
+#define MAX_SPRITES_IN_GROUP 22
+
+#include "types.h"
+#include "functions.h"
+#include "variables.h"
+
 // Prevent cross-jump optimization.
 #define BLOCK_CROSS_JUMP asm("");
 
@@ -55,6 +62,22 @@
 
 #define min(a, b) ((a) < (b) ? (a) : (b))
 #define max(a, b) ((a) >= (b) ? (a) : (b))
+
+enum
+{
+    STATE_INTRO,
+    STATE_TITLE,
+    STATE_GAME_MAIN,
+    STATE_GAME_IDLE,
+    STATE_OPTIONS,
+    STATE_POKEDEX,
+    STATE_UNKNOWN6,
+    STATE_EREADER,
+    STATE_SCORES_MAIN,
+    STATE_SCORES_IDLE,
+    STATE_FIELD_SELECT,
+    STATE_BONUS_FIELD_SELECT,
+};
 
 struct PinballGame
 {
